@@ -1,0 +1,26 @@
+"""
+def fib(n):
+    if n == 0: return 0
+    if n == 1: return 1
+    a = 0
+    b = 1
+    for x in range(n-1):
+        c = a + b
+        a = b
+        b = c
+    return b
+"""
+
+  
+def fib(n):
+    # Warunki stopu
+    if n == 0: return 0
+    if n == 1: return 1
+
+    # CVzesc rekurencyjna
+    return fib(n-1) + fib(n-2)
+
+print([fib(x) for x in range(10)])
+
+
+print([fib(x) for x in range(10)])
