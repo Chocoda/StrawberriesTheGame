@@ -1,3 +1,4 @@
+import glob
 import keyboard
 import os
 import time
@@ -11,22 +12,40 @@ def key_to_en(key):
         case other: return key
 
 
+
+map_files = sorted(glob.glob("map_*.txt"))
+
 # 😀
 # 🌿
 # 🌳
 # 🌊
 # 🢂🢁🢃🢀
 
-MAP = list("""\
-...ww\
-....w\
-f....\
-..t..\
-.f..t\
-""")
+def load_map (txt):
+    file = open(txt, 'r')
+    lines= file.readlines()
+    WIDTH= int(lines[0])
+    HEIGHT = len(lines) - 1
+    file.close()
+    return {"width": WIDTH,"height": HEIGHT, "map": list("".join( lines[1:]).replace("\n",""))}
 
-WIDTH = 5
-HEIGHT = 5
+
+loaded_map = load_map(map_files[0])
+MAP = loaded_map["map"]
+WIDTH = loaded_map["width"]
+HEIGHT = loaded_map["height"]
+
+"""
+    linijki_oprocz_pierwszej = lines[1:]
+    linijki_polaczone_w_jeden_lancuch = "".join(linijki_oprocz_pierwszej)
+    lancuch_bez_znakow_nowej_linii = linijki_polaczone_w_jeden_lancuch.replace("\n", "")
+    lancuch_zamieniony_na_liste_charakterow = list(lancuch_bez_znakow_nowej_linii)
+"""
+
+# MAP = list("".join(lines[1:]).replace("\n", ""))
+
+
+
 SYMBOLS = {
     ".": "🌿",
     "t": "🌳",
@@ -58,9 +77,9 @@ def print_map(mtx, width, prow, pcol, pdir):
 direction = "up"
 x, y = 0, 0
 punkty = 0
+number_of_times = 0
 while True:
     os.system("cls")
-
     print(f"Punkty: {punkty}")
     print_map(MAP, WIDTH, y, x, direction)
     dx, dy = 0,0
@@ -84,22 +103,24 @@ while True:
                 dy *= -1
             newx, newy = x+dx, y+dy
 
-
             if newx < 0 or newy < 0 or newx >= WIDTH or newy >= HEIGHT: 
                 continue
             if MAP[newx+newy*WIDTH] in ("w", "t"):
                 continue
 
             x, y = newx, newy
-
+            number_of_times += 1
             if MAP[x + y*WIDTH] == "f":
                 MAP[x + y*WIDTH] = "."
                 punkty += 1
+            if "f" not in MAP:
+                os.system("cls")
+                print(f"Wygrales! SCORE: {punkty} LICZBA WYKONANYCH POSUNIEC: {number_of_times}")
+                break
             
         case "q": break
 
         case other: print("Nie rozpoznano komedy.")
-
 
     
     time.sleep(.2)
