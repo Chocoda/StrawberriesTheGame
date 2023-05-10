@@ -20,7 +20,6 @@ map_files = sorted(glob.glob("map_*.txt"))
 # 🌳
 # 🌊
 # 🢂🢁🢃🢀
-
 def load_map (txt):
     file = open(txt, 'r')
     lines= file.readlines()
@@ -29,8 +28,8 @@ def load_map (txt):
     file.close()
     return {"width": WIDTH,"height": HEIGHT, "map": list("".join( lines[1:]).replace("\n",""))}
 
-
-loaded_map = load_map(map_files[0])
+current_map_idx = 0
+loaded_map = load_map(map_files[current_map_idx])
 MAP = loaded_map["map"]
 WIDTH = loaded_map["width"]
 HEIGHT = loaded_map["height"]
@@ -78,8 +77,14 @@ direction = "up"
 x, y = 0, 0
 punkty = 0
 number_of_times = 0
+serduszka = 3
+
 while True:
     os.system("cls")
+ 
+    # for x in range (serduszka):
+    #     print("❤️ ",end="")
+    # print("")
     print(f"Punkty: {punkty}")
     print_map(MAP, WIDTH, y, x, direction)
     dx, dy = 0,0
@@ -98,15 +103,21 @@ while True:
                 case "down": dy = 1
                 case "left": dx = -1
 
+
             if command == "down":
+ 
                 dx *= -1
                 dy *= -1
             newx, newy = x+dx, y+dy
 
+
             if newx < 0 or newy < 0 or newx >= WIDTH or newy >= HEIGHT: 
+                # serduszka -= 1
+                # print("Oh nie! zgubiles serduszko!")
                 continue
             if MAP[newx+newy*WIDTH] in ("w", "t"):
                 continue
+
 
             x, y = newx, newy
             number_of_times += 1
@@ -115,15 +126,26 @@ while True:
                 punkty += 1
             if "f" not in MAP:
                 os.system("cls")
-                print(f"Wygrales! SCORE: {punkty} LICZBA WYKONANYCH POSUNIEC: {number_of_times}")
-                break
+                print(f"Skonczyles poziom {current_map_idx + 1}!")
+                current_map_idx += 1
+                if current_map_idx < len(map_files):
+                    loaded_map = load_map(map_files[current_map_idx])
+                    MAP = loaded_map["map"]
+                    WIDTH = loaded_map["width"]
+                    HEIGHT = loaded_map["height"]
+                    x, y = 0, 0
+                    print("Nacisnij ENTER aby przejsc do nastepnego poziomu")
+                    keyboard.wait("enter")
+                    continue
+                break # Nie ma juz map do zaladowania => Koniec gry
+
             
         case "q": break
 
         case other: print("Nie rozpoznano komedy.")
-
     
     time.sleep(.2)
+print("koniec gry! Wygrales")
     
        
 
