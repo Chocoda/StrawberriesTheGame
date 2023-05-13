@@ -9,6 +9,7 @@ def key_to_en(key):
         case "droite": return "right"
         case "bas": return "down"
         case "gauche": return "left"
+
         case other: return key
 
 
@@ -38,7 +39,8 @@ HEIGHT = loaded_map["height"]
     linijki_oprocz_pierwszej = lines[1:]
     linijki_polaczone_w_jeden_lancuch = "".join(linijki_oprocz_pierwszej)
     lancuch_bez_znakow_nowej_linii = linijki_polaczone_w_jeden_lancuch.replace("\n", "")
-    lancuch_zamieniony_na_liste_charakterow = list(lancuch_bez_znakow_nowej_linii)
+ 
+   lancuch_zamieniony_na_liste_charakterow = list(lancuch_bez_znakow_nowej_linii)
 """
 
 # MAP = list("".join(lines[1:]).replace("\n", ""))
@@ -48,8 +50,10 @@ HEIGHT = loaded_map["height"]
 SYMBOLS = {
     ".": "🌿",
     "t": "🌳",
+ 
     "w": "🌊",
-    "f": "🍓"
+    "f": "🍓",
+    "c": "🌵"
 }
 
 newx, newy = 1,1
@@ -67,10 +71,11 @@ def print_map(mtx, width, prow, pcol, pdir):
                 print(DIRECTIONS[direction], end="")
 
             else:
+
                 ascii_symbol = mtx[col + width*row]
                 emoji_symbol = SYMBOLS[ascii_symbol]
                 print(emoji_symbol, end = "")
-        print("") 
+        print(end = "\n") 
 
 
 direction = "up"
@@ -78,7 +83,15 @@ x, y = 0, 0
 punkty = 0
 number_of_times = 0
 serduszka = 3
+print("""Witamy w grze wideo! 
+Zeby zakkonczyc gre: nacisnij "q" 
+UWAGA: Masz 3 zycia: zeby ich nie stracic nie wchodz na kaktusy!
+Dobrej zabawy!
+Nacisnij "s" zeby zaczac gre!
+ """)
 
+keyboard.wait("s")
+time.sleep(1)
 while True:
     os.system("cls")
  
@@ -86,10 +99,12 @@ while True:
     #     print("❤️ ",end="")
     # print("")
     print(f"Punkty: {punkty}")
+    print("❤️ "* serduszka )
     print_map(MAP, WIDTH, y, x, direction)
     dx, dy = 0,0
     command = key_to_en(keyboard.read_key())
     match command:
+
         case "right" | "left":
             dir_idx = DIR_NAMES.index(direction)
             didx = 1 if command == "right" else -1
@@ -118,6 +133,11 @@ while True:
             if MAP[newx+newy*WIDTH] in ("w", "t"):
                 continue
 
+            if MAP[newx+newy*WIDTH] =="c":
+                serduszka -= 1
+            elif serduszka == 0:
+                print("GAME OVER")
+                break
 
             x, y = newx, newy
             number_of_times += 1
@@ -126,6 +146,7 @@ while True:
                 punkty += 1
             if "f" not in MAP:
                 os.system("cls")
+           
                 print(f"Skonczyles poziom {current_map_idx + 1}!")
                 current_map_idx += 1
                 if current_map_idx < len(map_files):
@@ -143,9 +164,9 @@ while True:
         case "q": break
 
         case other: print("Nie rozpoznano komedy.")
-    
     time.sleep(.2)
-print("koniec gry! Wygrales")
+    
+print(f"koniec gry! Zrobiles {number_of_times} poruszen. ") 
     
        
 

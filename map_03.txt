@@ -1,7 +1,7 @@
 10
 ...wwww..f
-..t.ww...f
+c.t.wwc..f
 f....ft..f
-..t....w.f
-ff..t..f.f
+c.t....w.f
+ff..tc.f.f
 ffffffffff
