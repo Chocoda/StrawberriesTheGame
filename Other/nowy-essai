@@ -1,9 +1,0 @@
-import math
-def max_value(float_list):
-    max_val = -math.inf
-    for x in float_list:
-        if x > max_val:
-            max_val = x
-    return max_val
-
-print(max_value([-2, 4, 1, 4.1, 3]))

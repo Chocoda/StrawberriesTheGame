@@ -9,6 +9,7 @@ def key_to_en(key):
         case "droite": return "right"
         case "bas": return "down"
         case "gauche": return "left"
+        
 
         case other: return key
 
@@ -21,6 +22,7 @@ map_files = sorted(glob.glob("map_*.txt"))
 # 🌳
 # 🌊
 # 🢂🢁🢃🢀
+
 def load_map (txt):
     file = open(txt, 'r')
     lines= file.readlines()
@@ -67,14 +69,19 @@ def print_map(mtx, width, prow, pcol, pdir):
 
     for row in range (height):
         for col in range (width):
-            if row == prow and col == pcol :
-                print(DIRECTIONS[direction], end="")
+            # if row == prow and col == pcol :
+            #     print(DIRECTIONS[direction], end="")
 
-            else:
+            # else:
 
-                ascii_symbol = mtx[col + width*row]
-                emoji_symbol = SYMBOLS[ascii_symbol]
-                print(emoji_symbol, end = "")
+            #     ascii_symbol = mtx[col + width*row]
+            #     emoji_symbol = SYMBOLS[ascii_symbol]
+            #     print(emoji_symbol, end = "")
+
+
+            ascii_symbol = mtx[col + width*row]
+            emoji_symbol = SYMBOLS[ascii_symbol]
+            print(DIRECTIONS[direction] if row == prow and col == pcol else emoji_symbol, end = "")
         print(end = "\n") 
 
 
